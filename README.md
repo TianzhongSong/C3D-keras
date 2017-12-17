@@ -13,7 +13,8 @@ make_label_txt.py   Generate label texts.
 models.py   Define the C3D model.
 
 train_c3d.py    Train the C3D model, the init learning rate was set to 0.005, and it divided by 10 after 4，8，
-12 epoch as same as in the origin perper.
+12 epoch as same as in the origin perper. Video clips are resized to 128x171x16, then flip the data and apply a center crop
+(112x112x16)on clips.
 
 Results：
 
