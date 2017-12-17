@@ -12,7 +12,7 @@ make_label_txt.py   Generate label texts.
 
 models.py   Define the C3D model.
 
-train_c3d.py    Train the C3D model, the init learning rate was set to 0.005, and it divide 10 after 4，8，
+train_c3d.py    Train the C3D model, the init learning rate was set to 0.005, and it divided by 10 after 4，8，
 12 epoch as same as in the origin perper.
 
 Results：
