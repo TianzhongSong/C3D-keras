@@ -3,7 +3,7 @@ train c3d with keras
 
 A simple reproduce of C3D (https://github.com/facebook/C3D).
 
-Origin paper:https://www.cvfoundation.org/openaccess/content_iccv_2015/html/Tran_Learning_Spatiotemporal_Features_ICCV_2015_paper.html
+Origin paper:https://www.cv-foundation.org/openaccess/content_iccv_2015/html/Tran_Learning_Spatiotemporal_Features_ICCV_2015_paper.html
 
 Files:
 video2img.py   Convert videos to images for UCF-101 dataset.
