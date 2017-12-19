@@ -101,7 +101,7 @@ def train_data_crop(inputs,inputs_r):
     return inputs,inputs_r
 
 
-##一批一批生成训练数据
+
 def generator_train_batch(train_txt,batch_size,num_classes,img_path):
     ff = open(train_txt, 'r')
     lines = ff.readlines()
@@ -126,7 +126,7 @@ def generator_train_batch(train_txt,batch_size,num_classes,img_path):
             yield x_r, y
 
 
-##一批一批生成训练数据
+
 def generator_val_batch(val_txt,batch_size,num_classes,img_path):
     f = open(val_txt, 'r')
     lines = f.readlines()
