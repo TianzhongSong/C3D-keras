@@ -3,14 +3,13 @@ from models import c3d_model
 from keras.optimizers import SGD,Adam
 from keras.utils import np_utils
 from schedules import onetenth_4_8_12
-import matplotlib.pyplot as plt
 import numpy as np
 import random
 import cv2
 import os
 import matplotlib
 matplotlib.use('AGG')
-
+import matplotlib.pyplot as plt
 
 
 def plot_history(history, result_dir):
@@ -121,6 +120,8 @@ def generator_train_batch(train_txt,batch_size,num_classes,img_path):
             x_r = preprocess(x_train_r)
             y = np_utils.to_categorical(np.array(x_labels), num_classes)
             x,x_r = train_data_crop(x,x_r)
+            x = np.transpose(x, (0,2,3,1,4))
+            x_r = np.transpose(x_r, (0,2,3,1,4))
             yield x, y
             yield x_r, y
 
@@ -142,6 +143,7 @@ def generator_val_batch(val_txt,batch_size,num_classes,img_path):
             y_test,y_labels = process_line(new_line[a:b],img_path,train=False)
             x = preprocess(y_test)
             test_data = x[:,:, 8:120, 30:142, :]
+            test_data = np.transpose(test_data,(0,2,3,1,4))
             y = np_utils.to_categorical(np.array(y_labels), num_classes)
             yield test_data, y
 
