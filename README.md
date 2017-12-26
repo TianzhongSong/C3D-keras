@@ -5,24 +5,34 @@ A simple reproduce of C3D (https://github.com/facebook/C3D).
 
 Origin paper:https://www.cv-foundation.org/openaccess/content_iccv_2015/html/Tran_Learning_Spatiotemporal_Features_ICCV_2015_paper.html
 
-Files:
-video2img.py   Convert videos to images for UCF-101 dataset.
+## Files:
 
-make_label_txt.py   Generate label texts.
+### video2img.py   
 
-models.py   Define the C3D model.
+Convert videos to images for UCF-101 dataset.
 
-train_c3d.py    Train the C3D model, the init learning rate was set to 0.005, and it divided by 10 after 4，8，
+### make_label_txt.py  
+
+Generate label texts.
+
+### models.py   
+
+Define the C3D model.
+
+### train_c3d.py   
+
+Train the C3D model, the init learning rate was set to 0.005, and it divided by 10 after 4,8,
 12 epoch as same as in the origin perper. Video clips are resized to 128x171x16, then flip the data and apply a center crop
 (112x112x16)on clips.
 
-Results：
+## Results：
 
-train and val acc curve during training(the final val acc of origin paper is about 44% in Figure 2, where in my implementation is 42.96%, the batch size was set to 16 , I only have one GTX1080).
+### train and val acc curve during training
+the final val acc of origin paper is about 44% in Figure 2, where in my implementation is 42.96%, the batch size was set to 16 , I only have one GTX1080.
 
 ![image](https://github.com/TianzhongSong/c3d-keras/blob/master/results/model_accuracy.png)
 
-train and val loss during training.
+### train and val loss during training.
 
 ![image](https://github.com/TianzhongSong/c3d-keras/blob/master/results/model_loss.png)
 
