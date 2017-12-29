@@ -9,7 +9,7 @@ Origin paper:https://www.cv-foundation.org/openaccess/content_iccv_2015/html/Tra
 
 ### video2img.py   
 
-Convert videos to images for UCF-101 dataset.
+Convert videos to images for UCF-101 dataset (http://crcv.ucf.edu/data/UCF101.php).
 
 ### make_label_txt.py  
 
