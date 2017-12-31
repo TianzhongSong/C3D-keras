@@ -1,4 +1,4 @@
-# -- coding:utf-8 --
+# -*- coding:utf-8 -*-
 from models import c3d_model
 from keras.optimizers import SGD,Adam
 from keras.utils import np_utils
