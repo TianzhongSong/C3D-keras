@@ -10,12 +10,14 @@ test_list = f2.readlines()
 f3 = open('train_list.txt', 'w')
 f4 = open('test_list.txt', 'w')
 
+clip_length = 16
+
 for line in train_list:
     name = line.split(' ')[0]
     image_path = img_path+name
     label = line.split(' ')[-1]
     images = os.listdir(image_path)
-    nb = len(images) // 16
+    nb = len(images) // clip_length
     for i in range(nb):
         f3.write(name+' '+ str(i*16+1)+' '+label)
 
@@ -25,7 +27,7 @@ for line in test_list:
     image_path = img_path+name
     label = line.split(' ')[-1]
     images = os.listdir(image_path)
-    nb = len(images) // 16
+    nb = len(images) // clip_length
     for i in range(nb):
         f4.write(name+' '+ str(i*16+1)+' '+label)
 
