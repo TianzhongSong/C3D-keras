@@ -19,7 +19,7 @@ for line in train_list:
     images = os.listdir(image_path)
     nb = len(images) // clip_length
     for i in range(nb):
-        f3.write(name+' '+ str(i*16+1)+' '+label)
+        f3.write(name+' '+ str(i*clip_length+1)+' '+label)
 
 
 for line in test_list:
@@ -29,7 +29,7 @@ for line in test_list:
     images = os.listdir(image_path)
     nb = len(images) // clip_length
     for i in range(nb):
-        f4.write(name+' '+ str(i*16+1)+' '+label)
+        f4.write(name+' '+ str(i*clip_length+1)+' '+label)
 
 f1.close()
 f2.close()
