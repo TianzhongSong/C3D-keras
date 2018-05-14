@@ -1,6 +1,14 @@
 # c3d-keras
 train c3d with keras
 
+
+------------------update video test demo------------------------
+
+    python video_demo.py
+    
+![](https://github.com/TianzhongSong/C3D-keras/blob/master/videos/out.gif)
+
+---------------------------------------------------------------
 A simple reproduce of C3D (https://github.com/facebook/C3D).
 
 Origin paper:https://www.cv-foundation.org/openaccess/content_iccv_2015/html/Tran_Learning_Spatiotemporal_Features_ICCV_2015_paper.html
