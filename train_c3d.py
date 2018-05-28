@@ -48,7 +48,7 @@ def save_history(history, result_dir):
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
         fp.close()
 
-def process_line(lines,img_path,train=True):
+def process_batch(lines,img_path,train=True):
     num = len(lines)
     aa = np.zeros((num,16,128,171,3),dtype='float32')
     bb = np.zeros((num,16,128,171,3),dtype='float32')
@@ -115,7 +115,7 @@ def generator_train_batch(train_txt,batch_size,num_classes,img_path):
         for i in range(int(num/batch_size)):
             a = i*batch_size
             b = (i+1)*batch_size
-            x_train,x_train_r,x_labels = process_line(new_line[a:b],img_path,train=True)
+            x_train,x_train_r,x_labels = process_batch(new_line[a:b],img_path,train=True)
             x = preprocess(x_train)
             x_r = preprocess(x_train_r)
             y = np_utils.to_categorical(np.array(x_labels), num_classes)
@@ -140,7 +140,7 @@ def generator_val_batch(val_txt,batch_size,num_classes,img_path):
         for i in range(int(num / batch_size)):
             a = i * batch_size
             b = (i + 1) * batch_size
-            y_test,y_labels = process_line(new_line[a:b],img_path,train=False)
+            y_test,y_labels = process_batch(new_line[a:b],img_path,train=False)
             x = preprocess(y_test)
             test_data = x[:,:, 8:120, 30:142, :]
             test_data = np.transpose(test_data,(0,2,3,1,4))
