@@ -7,6 +7,7 @@ import numpy as np
 import random
 import cv2
 import os
+import random
 import matplotlib
 matplotlib.use('AGG')
 import matplotlib.pyplot as plt
@@ -48,11 +49,10 @@ def save_history(history, result_dir):
                 i, loss[i], acc[i], val_loss[i], val_acc[i]))
         fp.close()
 
+        
 def process_batch(lines,img_path,train=True):
     num = len(lines)
-    aa = np.zeros((num,16,128,171,3),dtype='float32')
-    bb = np.zeros((num,16,128,171,3),dtype='float32')
-    aa_reverse = np.zeros((num,16,128,171,3),dtype='float32')
+    batch = np.zeros((num,16,128,171,3),dtype='float32')
     labels = np.zeros(num,dtype='int')
     for i in range(num):
         path = lines[i].split(' ')[0]
@@ -64,22 +64,28 @@ def process_batch(lines,img_path,train=True):
         imgs = os.listdir(img_path+path)
         imgs.sort(key=str.lower)
         for j in range(16):
-            img = imgs[symbol + j]
-            frame = cv2.imread(img_path+path + '/' + img)
-            frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-            frame = cv2.resize(frame,(171,128))
             if train:
-                aa[i][j][:][:][:] = frame.astype(np.float32)
-                rimage = cv2.flip(frame, 1).astype(np.float32)
-                aa_reverse[i][j][:][:][:] = rimage
+                crop_x = random.randint(0, 15)
+                crop_y = random.randint(0, 58)
+                is_flip = random.randint(0, 1)
+                for j in range(16):
+                    img = imgs[symbol + j]
+                    image = cv2.imread(root_path + path + '/' + img)
+                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    image = cv2.resize(image, (171, 128))
+                    if is_flip == 1:
+                        image = cv2.flip(image, 1)
+                    batch[i][j][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
+                labels[i] = label
             else:
-                image = cv2.resize(frame, (171, 128)).astype(np.float32)
-                bb[i][j][:][:][:] = image
-        labels[i] = label
-    if train:
-        return aa,aa_reverse,labels
-    else:
-        return bb,labels
+                for j in range(16):
+                    img = imgs[symbol + j]
+                    image = cv2.imread(root_path + path + '/' + img)
+                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    image = cv2.resize(image, (171, 128))
+                    batch[i][j][:][:][:] = image[8:120, 30:142, :]
+                labels[i] = label
+    return batch, labels
 
 
 def preprocess(inputs):
@@ -95,13 +101,6 @@ def preprocess(inputs):
     return inputs
 
 
-def train_data_crop(inputs,inputs_r):
-    inputs = inputs[:,:,8:120,30:142,:]
-    inputs_r = inputs_r[:,:,8:120,30:142,:]
-    return inputs,inputs_r
-
-
-
 def generator_train_batch(train_txt,batch_size,num_classes,img_path):
     ff = open(train_txt, 'r')
     lines = ff.readlines()
@@ -115,16 +114,12 @@ def generator_train_batch(train_txt,batch_size,num_classes,img_path):
         for i in range(int(num/batch_size)):
             a = i*batch_size
             b = (i+1)*batch_size
-            x_train,x_train_r,x_labels = process_batch(new_line[a:b],img_path,train=True)
+            x_train, x_labels = process_batch(new_line[a:b],img_path,train=True)
             x = preprocess(x_train)
-            x_r = preprocess(x_train_r)
             y = np_utils.to_categorical(np.array(x_labels), num_classes)
-            x,x_r = train_data_crop(x,x_r)
+            x = x[:,:, 8:120, 30:142, :]
             x = np.transpose(x, (0,2,3,1,4))
-            x_r = np.transpose(x_r, (0,2,3,1,4))
             yield x, y
-            yield x_r, y
-
 
 
 def generator_val_batch(val_txt,batch_size,num_classes,img_path):
@@ -171,7 +166,7 @@ def main():
     model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
     model.summary()
     history = model.fit_generator(generator_train_batch(train_file, batch_size, num_classes,img_path),
-                                  steps_per_epoch=train_samples // batch_size *2,
+                                  steps_per_epoch=train_samples // batch_size,
                                   epochs=epochs,
                                   callbacks=[onetenth_4_8_12(lr)],
                                   validation_data=generator_val_batch(test_file,
