@@ -52,7 +52,7 @@ def save_history(history, result_dir):
         
 def process_batch(lines,img_path,train=True):
     num = len(lines)
-    batch = np.zeros((num,16,128,171,3),dtype='float32')
+    batch = np.zeros((num,16,112,112,3),dtype='float32')
     labels = np.zeros(num,dtype='int')
     for i in range(num):
         path = lines[i].split(' ')[0]
@@ -117,7 +117,6 @@ def generator_train_batch(train_txt,batch_size,num_classes,img_path):
             x_train, x_labels = process_batch(new_line[a:b],img_path,train=True)
             x = preprocess(x_train)
             y = np_utils.to_categorical(np.array(x_labels), num_classes)
-            x = x[:,:, 8:120, 30:142, :]
             x = np.transpose(x, (0,2,3,1,4))
             yield x, y
 
@@ -137,7 +136,6 @@ def generator_val_batch(val_txt,batch_size,num_classes,img_path):
             b = (i + 1) * batch_size
             y_test,y_labels = process_batch(new_line[a:b],img_path,train=False)
             x = preprocess(y_test)
-            test_data = x[:,:, 8:120, 30:142, :]
             test_data = np.transpose(test_data,(0,2,3,1,4))
             y = np_utils.to_categorical(np.array(y_labels), num_classes)
             yield test_data, y
