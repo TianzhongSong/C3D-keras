@@ -63,28 +63,27 @@ def process_batch(lines,img_path,train=True):
         symbol = int(symbol)-1
         imgs = os.listdir(img_path+path)
         imgs.sort(key=str.lower)
-        for j in range(16):
-            if train:
-                crop_x = random.randint(0, 15)
-                crop_y = random.randint(0, 58)
-                is_flip = random.randint(0, 1)
-                for j in range(16):
-                    img = imgs[symbol + j]
-                    image = cv2.imread(root_path + path + '/' + img)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    image = cv2.resize(image, (171, 128))
-                    if is_flip == 1:
-                        image = cv2.flip(image, 1)
-                    batch[i][j][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
-                labels[i] = label
-            else:
-                for j in range(16):
-                    img = imgs[symbol + j]
-                    image = cv2.imread(root_path + path + '/' + img)
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    image = cv2.resize(image, (171, 128))
-                    batch[i][j][:][:][:] = image[8:120, 30:142, :]
-                labels[i] = label
+        if train:
+            crop_x = random.randint(0, 15)
+            crop_y = random.randint(0, 58)
+            is_flip = random.randint(0, 1)
+            for j in range(16):
+                img = imgs[symbol + j]
+                image = cv2.imread(root_path + path + '/' + img)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                image = cv2.resize(image, (171, 128))
+                if is_flip == 1:
+                    image = cv2.flip(image, 1)
+                batch[i][j][:][:][:] = image[crop_x:crop_x + 112, crop_y:crop_y + 112, :]
+            labels[i] = label
+        else:
+            for j in range(16):
+                img = imgs[symbol + j]
+                image = cv2.imread(root_path + path + '/' + img)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                image = cv2.resize(image, (171, 128))
+                batch[i][j][:][:][:] = image[8:120, 30:142, :]
+            labels[i] = label
     return batch, labels
 
 
