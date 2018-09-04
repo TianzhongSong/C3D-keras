@@ -135,9 +135,9 @@ def generator_val_batch(val_txt,batch_size,num_classes,img_path):
             b = (i + 1) * batch_size
             y_test,y_labels = process_batch(new_line[a:b],img_path,train=False)
             x = preprocess(y_test)
-            test_data = np.transpose(test_data,(0,2,3,1,4))
+            x = np.transpose(x,(0,2,3,1,4))
             y = np_utils.to_categorical(np.array(y_labels), num_classes)
-            yield test_data, y
+            yield x, y
 
 
 def main():
