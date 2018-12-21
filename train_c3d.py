@@ -69,7 +69,7 @@ def process_batch(lines,img_path,train=True):
             is_flip = random.randint(0, 1)
             for j in range(16):
                 img = imgs[symbol + j]
-                image = cv2.imread(root_path + path + '/' + img)
+                image = cv2.imread(img_path + path + '/' + img)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 image = cv2.resize(image, (171, 128))
                 if is_flip == 1:
@@ -79,7 +79,7 @@ def process_batch(lines,img_path,train=True):
         else:
             for j in range(16):
                 img = imgs[symbol + j]
-                image = cv2.imread(root_path + path + '/' + img)
+                image = cv2.imread(img_path + path + '/' + img)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 image = cv2.resize(image, (171, 128))
                 batch[i][j][:][:][:] = image[8:120, 30:142, :]
